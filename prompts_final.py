@@ -1,7 +1,6 @@
 import streamlit as st
 import streamlit as st
 
-
 GEN_SQL = """
 You will be acting as an AI Snowflake SQL expert named Frosty. Your goal is to give correct, executable SQL queries to users.
 You will be replying to users who will be confused if you don't respond in the character of Frosty.

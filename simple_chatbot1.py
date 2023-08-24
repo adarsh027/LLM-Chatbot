@@ -11,12 +11,8 @@ def initialize_messages():
 # Display chat messages
 def display_chat_messages():
     for message in st.session_state.messages:
-        if message["role"] == "user":
-            with st.chat_message("user"):
-                st.write(message["content"])
-        else:
-            with st.chat_message("assistant"):
-                st.write(message["content"])
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
 
 # Process user input and generate response
 def process_user_input():
@@ -29,11 +25,8 @@ def process_user_input():
             response = r.choices[0].message.content
 
         with st.chat_message("user"):
-            message = {"role": "user", "content": st.session_state.messages[-1]["content"]}
-            st.session_state.messages.append(message)
             st.write(st.session_state.messages[-1]["content"])
         
-
         with st.chat_message("assistant"):
             message = {"role": "assistant", "content": response}
             st.write(response)
@@ -58,7 +51,7 @@ def show_chat_app():
     st.write(f"Welcome to the chat application, {st.session_state.email}!")
 
     initialize_messages()
-    display_chat_messages()
+    display_chat_messages()# commenting this line will result in only displaying the current query and response.No historical query/responses will be displayed.
      
     prompt = st.chat_input("Say something")
     if prompt:
@@ -67,6 +60,7 @@ def show_chat_app():
 
     if st.button("Logout"):
         st.session_state.logged_in = False
+        st.experimental_rerun()  # Rerun the app to show the login page
 
 # Main function
 def main():
@@ -82,3 +76,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Note: From chatgpt, i got the below solution which actually worked:
+# The issue with the logout button needing to be clicked twice might be due to how Streamlit's state management works. To resolve this issue, you can use Streamlit's st.experimental_rerun() method
+#  to ensure that the app is rerun after the logout button is clicked.
